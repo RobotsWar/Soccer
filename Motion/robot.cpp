@@ -13,6 +13,7 @@ void printUsage()
     std::cout << "  -t [turn]: Sets the robot turn" << std::endl;
     std::cout << "  -r [radius]: Sets the robot radius" << std::endl;
     std::cout << "  -h [height]: Sets the robot height" << std::endl;
+    std::cout << "  -d: Don't move (stop moving)" << std::endl;
     std::cout << std::endl;
 }
 
@@ -22,7 +23,7 @@ int main(int argc, char *argv[])
     int index;
     Robot robot;
 
-    while ((index = getopt(argc, argv, "gsx:y:t:h:r:")) != -1) {
+    while ((index = getopt(argc, argv, "gsx:y:t:h:r:d")) != -1) {
         switch (index) {
             case 'g':
                 usage = false;
@@ -69,6 +70,11 @@ int main(int argc, char *argv[])
                 robot.setH(h);
                       }
                 break;
+            case 'd': {
+                usage = false;
+                robot.stopMoving();
+              }
+              break;
         }
     }
 
