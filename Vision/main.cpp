@@ -4,7 +4,7 @@
 int main()
 {
     cv::VideoCapture camera(0);
-    if (camera.isOpened()) {
+    if (!camera.isOpened()) {
         std::cerr << "Unable to open camera" << std::endl;
         return 1;
     }
@@ -14,8 +14,39 @@ int main()
     while (true) {
         cv::Mat frame;
         camera >> frame;
+
+        long sumX = 0;
+        long sumY = 0;
+        long count = 0;
+        for (int i=0;i<frame.rows;i++) {
+            for (int j=0;j<frame.cols;j++) {
+                cv::Vec3b& pixel = frame.at<cv::Vec3b>(i,j);
+                if (
+                    pixel[2] > 100 && 
+                    pixel[0] < 100 && 
+                    pixel[1] < 100
+                ) {
+                    pixel[0] = 255;
+                    pixel[1] = 255;
+                    pixel[2] = 255;
+                    sumX += j;
+                    sumY += i;
+                    count++;
+                } else {
+                    pixel[0] = 0;
+                    pixel[1] = 0;
+                    pixel[2] = 0;
+                }
+            }
+        }
+        if (count > 0) {
+            int x = sumX/count;
+            int y = sumY/count;
+            cv::circle(frame, cv::Point(x, y), 10, cv::Scalar(0, 0, 255), -1);
+        }
+
         cv::imshow("win", frame);
-        if (cv::waitKey(10) != 1) break;
+        if (cv::waitKey(10) != -1) break;
     }
 
     return 0;
