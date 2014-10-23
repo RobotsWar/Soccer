@@ -1,6 +1,19 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
+cv::Mat frame;
+
+void onMouse(int event, int x, int y, int, void*)
+{
+    if (event == cv::EVENT_LBUTTONDOWN) {
+        cv::Vec3b& pixel = frame.at<cv::Vec3b>(y,x);
+        std::cout << "Pixel at [" << x << "," << y << "] = ";
+        std::cout << (int)pixel[0] << ",";
+        std::cout << (int)pixel[1] << ",";
+        std::cout << (int)pixel[2] << std::endl;
+    }
+}
+
 int main()
 {
     cv::VideoCapture camera(0);
@@ -11,8 +24,9 @@ int main()
 
     cv::namedWindow("win");
 
+    cv::setMouseCallback("win", onMouse, NULL);
+
     while (true) {
-        cv::Mat frame;
         camera >> frame;
 
         long sumX = 0;
