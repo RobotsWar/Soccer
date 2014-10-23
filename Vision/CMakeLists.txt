@@ -18,6 +18,6 @@ set(EXTRA_LIBS
 )
 
 #Build Vision test
-add_executable(testVision "main.cpp")
+add_executable(testVision ${SOURCES_FILES_CPP})
 target_link_libraries(testVision ${EXTRA_LIBS})
 
