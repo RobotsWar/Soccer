@@ -1,5 +1,5 @@
 #include <iostream>
-#include <opencv.hpp>
+#include <opencv2/opencv.hpp>
 
 int main()
 {
