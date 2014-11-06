@@ -3,6 +3,11 @@ project(Soccer)
 
 set(SOURCES_FILES_CPP
     main.cpp
+    tim.cpp
+)
+
+ADD_DEFINITIONS (
+    -std=c++11
 )
 
 #Look for OpenCV Lib

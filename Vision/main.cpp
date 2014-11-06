@@ -1,6 +1,8 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
+void tim();
+
 cv::Mat frame;
 
 void onMouse(int event, int x, int y, int, void*)
@@ -16,7 +18,9 @@ void onMouse(int event, int x, int y, int, void*)
 
 int main()
 {
-    cv::VideoCapture camera(0);
+   //tim();
+
+    cv::VideoCapture camera(1);
     if (!camera.isOpened()) {
         std::cerr << "Unable to open camera" << std::endl;
         return 1;
