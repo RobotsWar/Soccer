@@ -3,7 +3,9 @@ project(Soccer)
 
 set(SOURCES_FILES_CPP
     main.cpp
-    tim.cpp
+    calibrate.cpp
+    vision.cpp
+    params.cpp
 )
 
 ADD_DEFINITIONS (
@@ -19,6 +21,7 @@ link_directories(${OpenCV_DIR}/lib ${OpenCV_DIR}/3rdparty/lib)
 #Use OpenCV and v4l2
 set(EXTRA_LIBS
     ${OpenCV_LIBS}
+    opencv_highgui
     v4l2
 )
 
