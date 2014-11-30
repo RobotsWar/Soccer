@@ -5,7 +5,7 @@
 
 void addControls();
 void onMouse(int event, int x, int y, int, void*);
-void onKey(int key);
+void onKey(char key);
 bool nextCamera();
 void drawInfo(cv::Mat & dst);
 std::pair<cv::Vec3d,cv::Vec3d> stdDev(const std::list<cv::Vec3d> & samples);
@@ -58,7 +58,7 @@ void calibrate(params & p
       cv::imshow("source"  , Src);
       cv::imshow("feedback", fb);
 
-      const int k = cv::waitKey(10);
+      const char k = cv::waitKey(10);
       onKey(k);
       if (k == 'q') quit = true;
    }
@@ -126,7 +126,7 @@ void onMouse(int event, int x, int y, int, void*)
    }
 }
 
-void onKey(int key)
+void onKey(char key)
 {
    /* Mode échantillonnage */
    if (key == 'p' and State == DEFAULT)

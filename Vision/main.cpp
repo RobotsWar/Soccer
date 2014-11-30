@@ -7,7 +7,7 @@
 void calibrate(params & p
 	       ,void (*feedback)(params &, const cv::Mat & src, cv::Mat & dst));
 
-void processFrame(const params & p, const cv::Mat & src, cv::Mat * feedback);
+void processFrameTim(const params & p, const cv::Mat & src, cv::Mat * feedback);
 
 
 int main()
@@ -34,7 +34,7 @@ int main()
 	     [] (params & p, const cv::Mat & src, cv::Mat & feedback)
 	     {
 		// insert your glue code ici :)
-		processFrame(p, src, &feedback);
+		processFrameTim(p, src, &feedback);
 	     } );
 
    

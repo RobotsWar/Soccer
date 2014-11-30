@@ -4,7 +4,7 @@ project(Soccer)
 set(SOURCES_FILES_CPP
     main.cpp
     calibrate.cpp
-    vision.cpp
+    vision-tim.cpp
     params.cpp
 )
 
