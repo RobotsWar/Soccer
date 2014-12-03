@@ -17,6 +17,10 @@
 void ball(const params & p, const cv::Mat & src, const cv::Mat & mask, int& x, int& y, cv::Mat * feedback);
 void ground(const params & p, const cv::Mat & src, cv::Mat & mask);
 
+
+
+
+
 void processFrameTim(const params & p, const cv::Mat & src, cv::Mat * feedback = nullptr)
 {
    cv::Mat resized, bgMask;

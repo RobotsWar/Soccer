@@ -1,6 +1,7 @@
 #include "params.hpp"
 
 #include <iostream>
+#include <list>
 #include <opencv2/opencv.hpp>
 
 void addControls();
