@@ -1,5 +1,10 @@
 #pragma once
 
+#include "params.hpp"
+
+#include <opencv2/opencv.hpp>
+
+
 template <typename T>
 T abs(T x) { return (x < 0) ? -x : x; }
 
@@ -31,7 +36,7 @@ void stab(T& old, const T& new_, const T& max)
 
 
 
-typedef void (*position_vision)(const params&, const cv::Mat& src, int& x, int& y, cv::Mat * feedback = nullptr);
+typedef void (*position_vision)(const params&, const cv::Mat& src, int& x, int& y, cv::Mat * feedback);
 // on pourra généraliser ça avec une interface Sensor 
 class PositionSensor // : public Sensor
 {
@@ -39,12 +44,12 @@ public:
    /* en pixels */
    int X;
    int Y;
-   bool Unknown = true;
-
+   //bool Unknown = true;
+   
    int FromX;
    int FromY;
    double Since;
-
+   
    /* en secondes */
    double Interval;
 
@@ -53,6 +58,7 @@ public:
 
    position_vision Vision;
 
+   PositionSensor();
    
    /* virtual */ void update(const params&, const cv::Mat& src, double time, cv::Mat * feedback = nullptr);
 };

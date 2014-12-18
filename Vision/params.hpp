@@ -37,6 +37,9 @@ enum param
    ,BgErodeSize
    ,BgDilateSize
 
+   /* Stabilisation balle */
+   ,BallStab
+
 
    ,END
 };

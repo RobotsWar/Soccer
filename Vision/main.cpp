@@ -1,13 +1,16 @@
 #include "params.hpp"
+#include "Sensor.hpp"
 
 #include <iostream>
 #include <fstream>
 #include <opencv2/opencv.hpp>
 
-void calibrate(params & p
-	       ,void (*feedback)(params &, const cv::Mat & src, cv::Mat & dst));
 
-void processFrameTim(const params & p, const cv::Mat & src, cv::Mat * feedback);
+void calibrate(params & p
+	       ,std::function<void(params &, const cv::Mat & src, cv::Mat & dst)> feedback);
+
+
+void processFrameTim(const params & p, const cv::Mat & src, int& x, int& y, cv::Mat * feedback);
 
 
 int main()
@@ -29,14 +32,18 @@ int main()
    in.close();
 
 
+   
+   PositionSensor sensor;
+   sensor.Vision = processFrameTim;
+   
 
    calibrate(p,
-	     [] (params & p, const cv::Mat & src, cv::Mat & feedback)
+	     [sensor] (params & p, const cv::Mat & src, cv::Mat & feedback) mutable
 	     {
 		// insert your glue code ici :)
-		processFrameTim(p, src, &feedback);
+		sensor.update(p, src, cv::getTickCount()/cv::getTickFrequency(), &feedback);
 	     } );
-
+   
    
 
    std::ofstream out(paramsFile.c_str());

@@ -6,6 +6,7 @@ set(SOURCES_FILES_CPP
     calibrate.cpp
     vision-tim.cpp
     params.cpp
+    Sensor.cpp
 )
 
 ADD_DEFINITIONS (

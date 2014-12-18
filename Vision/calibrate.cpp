@@ -35,7 +35,7 @@ int PickToX;
 int PickToY;
 
 void calibrate(params & p
-	       ,void (*feedback)(params &, const cv::Mat & src, cv::Mat & dst))
+	       ,std::function<void(params &, const cv::Mat & src, cv::Mat & dst)> feedback)
 {
    nextCamera();
 
@@ -84,6 +84,7 @@ void addControls()
 
    /* Balle */
    cv::createTrackbar("BallStdDevCoef", "ctrl", &( Params[BallStdDevCoef] ), PARAM_MAX);
+   cv::createTrackbar("BallStab", "ctrl", &( Params[BallStab] ), 30);
 }
 
 

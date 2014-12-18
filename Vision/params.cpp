@@ -36,6 +36,10 @@ void defaultParams(params & p)
    p[BgErodeIterations]  = 1;
    p[BgErodeSize] = 5;
    p[BgDilateSize] = 10;
+
+
+   /* Stabilisation balle */
+   p[BallStab] = 0;
 }
 
 std::string to_string(const params & p)

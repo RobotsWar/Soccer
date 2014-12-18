@@ -21,17 +21,17 @@ void ground(const params & p, const cv::Mat & src, cv::Mat & mask);
 
 
 
-void processFrameTim(const params & p, const cv::Mat & src, cv::Mat * feedback = nullptr)
+void processFrameTim(const params & p, const cv::Mat & src, int& x, int& y, cv::Mat * feedback = nullptr)
 {
    cv::Mat resized, bgMask;
 
-   cv::resize(src, resized, cv::Size( (p[Resize]*src.cols)/PARAM_MAX  + 1
-				      ,(p[Resize]*src.rows)/PARAM_MAX + 1  ));
-
+   // cv::resize(src, resized, cv::Size( (p[Resize]*src.cols)/PARAM_MAX  + 1
+   // 				      ,(p[Resize]*src.rows)/PARAM_MAX + 1  ));
+   const double dsize = p[Resize]/ (double) PARAM_MAX;
+   cv::resize(src, resized, cv::Size(), dsize, dsize);
 
    ground(p, resized, bgMask);
 
-   int x, y;
 
 #ifndef ONBOARD
    cv::Mat feedbackBall;
@@ -40,6 +40,8 @@ void processFrameTim(const params & p, const cv::Mat & src, cv::Mat * feedback =
    ball(p, resized, bgMask, x, y);
 #endif
 
+   x = (int) (x/dsize);
+   y = (int) (y/dsize);
 
 #ifndef ONBOARD
    if (feedback != nullptr)
@@ -60,7 +62,7 @@ void processFrameTim(const params & p, const cv::Mat & src, cv::Mat * feedback =
       src.copyTo(masked, bgMaskR);
       //cvtColor(m1,m1, CV_GRAY2BGR);
       addWeighted( masked, 1, feedbackBallR, 0.3, 0.0, mix);
-      circle(mix, cv::Point(xr,yr), 20, cv::Scalar(0,0,255), 3);//, int thickness=1, int lineType=8, int shift=0)
+      //circle(mix, cv::Point(xr,yr), 20, cv::Scalar(0,0,255), 3);//, int thickness=1, int lineType=8, int shift=0)
    
       (*feedback) = mix;
    }
@@ -117,8 +119,16 @@ void ball(const params & p, const cv::Mat & src, const cv::Mat & mask, int& x, i
    }
 
    count = (count > 0) ? count : 1;
-   x = sx/count;
-   y = sy/count;
+   if (count > 0)
+   {
+      x = sx/count;
+      y = sy/count;
+   }
+   else
+   {
+      x = -1;
+      y = -1;
+   }
 
 #ifndef ONBOARD
    if (feedback != nullptr)
