@@ -16,8 +16,7 @@
 
 void ball(const params & p, const cv::Mat & src, const cv::Mat & mask, int& x, int& y, cv::Mat * feedback);
 void ground(const params & p, const cv::Mat & src, cv::Mat & mask);
-
-
+void binAvg(const cv::Mat & src, int& x, int& y, double dist = -1, double avgX = -1, double avgY = -1);
 
 
 
@@ -100,23 +99,67 @@ void ball(const params & p, const cv::Mat & src, const cv::Mat & mask, int& x, i
 
    cv::bitwise_and(bin, mask, bin);
 
-   long long sx = 0;
-   long long sy = 0;
-   long long count = 0;
+   binAvg(bin, x, y);
+   binAvg(bin, x, y, 10, x , y);
+   binAvg(bin, x, y, 7, x , y);
 
-   for(int row = 0; row < bin.rows; row++) {
-      uchar* p = bin.ptr(row);
-      for(int col = 0; col < bin.cols; col++)
-      {
-	 uchar & pix = *(p+col);
-	 if (pix)
+#ifndef ONBOARD
+   if (feedback != nullptr)
+   {
+      cv::Mat m1;
+      cvtColor(bin,bin, CV_GRAY2BGR);
+      (*feedback) = bin;
+   }
+#endif
+
+}
+
+void binAvg(const cv::Mat & src, int& x, int& y, double dist, double avgX, double avgY)
+{
+   double sx = 0;
+   double sy = 0;
+   double count = 0;
+
+   if (dist >= 0)
+   {
+      for(int row = 0; row < src.rows; row++) {
+	 const uchar* p = src.ptr(row);
+	 for(int col = 0; col < src.cols; col++)
 	 {
-	    sx += col;
-	    sy += row;
-	    count++;
+	    const uchar & pix = *(p+col);
+	    if (pix)
+	    {
+	       const double dx = std::abs(col - avgX);
+	       const double dy = std::abs(row - avgY);
+	       const double d  = std::sqrt(dx*dx + dy*dy);
+
+	       const double k = d > dist ? dist/(d*d) : 1;
+
+	       sx += col * k;
+	       sy += row * k;
+
+	       count += k;
+	    }
 	 }
       }
    }
+   else
+   {
+      for(int row = 0; row < src.rows; row++) {
+	 const uchar* p = src.ptr(row);
+	 for(int col = 0; col < src.cols; col++)
+	 {
+	    const uchar & pix = *(p+col);
+	    if (pix)
+	    {
+	       sx += col;
+	       sy += row;
+	       count++;
+	    }
+	 }
+      }
+   }
+
 
    count = (count > 0) ? count : 1;
    if (count > 0)
@@ -129,14 +172,5 @@ void ball(const params & p, const cv::Mat & src, const cv::Mat & mask, int& x, i
       x = -1;
       y = -1;
    }
-
-#ifndef ONBOARD
-   if (feedback != nullptr)
-   {
-      cv::Mat m1;
-      cvtColor(bin,bin, CV_GRAY2BGR);
-      (*feedback) = bin;
-   }
-#endif
-
 }
+
