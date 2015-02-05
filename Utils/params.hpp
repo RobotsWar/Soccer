@@ -51,3 +51,6 @@ void defaultParams(params & p);
 std::string to_string(const params & p);
 bool readParams(params & p, const std::string & str);
 
+void loadParams(params & p, const std::string & file);
+void saveParams(params & p, const std::string & file);
+

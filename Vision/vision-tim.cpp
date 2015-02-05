@@ -1,9 +1,9 @@
-#include "params.hpp"
+#include "Utils/params.hpp"
 
 #include <opencv2/opencv.hpp>
 
 
-
+// un petit hack assez moche :)
 #define CH(pre,post,s) (p[pre##Avg##post] + ((p[pre##StdDev##post]*p[pre##StdDevCoef]*5) / PARAM_MAX) * s)
 
 #define IN_RANGE(param,src,dst)						\

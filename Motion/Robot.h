@@ -22,8 +22,8 @@ class Robot
         // Moving control
         void setDx(float dx);
         void setDy(float dy);
-        void setVector(float dx, float dy);
-        void setTurn(float turn);
+        void setVector(float dx, float dy); // milimètres par pas
+        void setTurn(float turn);           // degrés     par pas
         void stopMoving();
 
         // Posture

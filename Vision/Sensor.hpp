@@ -1,21 +1,65 @@
 #pragma once
 
-#include "params.hpp"
+#include "Utils/params.hpp"
+#include "Control/MainLoop.hpp"
 
 #include <opencv2/opencv.hpp>
-
-
-template <typename T>
-T abs(T x) { return (x < 0) ? -x : x; }
+#include <list>
 
 template <typename T>
-void stab(T& old, const T& new_, const T& max)
+inline T abs(T x) { return (x < 0) ? -x : x; }
+
+
+class SensorListener {
+public:
+   virtual void onSensor(double time, void* sender) = 0;
+};
+
+class Sensor : public FrameListener
 {
-   if (abs<>(old-new_) > max)
-      old = new_;
-}
+public:
+   void register_(SensorListener&);
+   void unregister(SensorListener&);
+
+protected:
+   void notify(double time, void* sender) const;
+
+private:
+   std::set<SensorListener*> Listeners;
+};
 
 
+
+
+typedef void (*position_vision)(const params&, const cv::Mat& src, int& x, int& y, cv::Mat * feedback);
+class PositionSensor : public Sensor
+{
+public: // faudrait encapsuler un peu...
+   // toutes les positions sont entre 0 et 1
+   // 0,0 en bas à gauche ; 1,1 en haut à droite
+   double X;
+   double Y;
+   //bool Unknown = true;
+   
+   double FromX;
+   double FromY;
+   double Since;
+   
+   /* en secondes */
+   double Interval;
+
+   /* en unités/seconde */
+   double Speed;
+
+   position_vision Vision;
+   
+   PositionSensor(position_vision vision, double interval = 0.3);
+   
+   void onFrame(const params&, const cv::Mat& src, double time, cv::Mat * feedback = nullptr) override;
+};
+
+
+//// overkill à priori
 // template <typename T>
 // class Stabilized
 // {
@@ -31,35 +75,18 @@ void stab(T& old, const T& new_, const T& max)
 // 	 Value = value;
 //    }
 // };
-
-
-
-
-
-typedef void (*position_vision)(const params&, const cv::Mat& src, int& x, int& y, cv::Mat * feedback);
-// on pourra généraliser ça avec une interface Sensor 
-class PositionSensor // : public Sensor
-{
-public:
-   /* en pixels */
-   int X;
-   int Y;
-   //bool Unknown = true;
-   
-   int FromX;
-   int FromY;
-   double Since;
-   
-   /* en secondes */
-   double Interval;
-
-   /* en pixels/seconde */
-   double Speed;
-
-   position_vision Vision;
-
-   PositionSensor();
-   
-   /* virtual */ void update(const params&, const cv::Mat& src, double time, cv::Mat * feedback = nullptr);
-};
-
+//
+// template <typename T>
+// inline T stab(T old, T new_, T dmax, bool & updated)
+// {
+//    if (abs<>(old-new_) > dmax)
+//    {
+//       updated = true;
+//       return new_;
+//    }
+//    else
+//    {
+//       updated = false;
+//       return old;
+//    }
+// }

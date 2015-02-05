@@ -1,14 +1,22 @@
 cmake_minimum_required(VERSION 2.8)
 project(Soccer)
 
-include_directories(..)
+include_directories(".")
 
 set(SOURCES_FILES_CPP
     main.cpp
-    calibrate.cpp
-    vision-tim.cpp
-    ../Utils/params.cpp
-    Sensor.cpp
+    
+    Vision/calibrate.cpp
+    Vision/vision-tim.cpp
+    Vision/Sensor.cpp
+
+    Control/Controller.cpp
+    Control/MainLoop.cpp
+
+    Motion/Robot.cpp
+    Motion/serialib.cpp
+
+    Utils/params.cpp
 )
 
 ADD_DEFINITIONS (
@@ -29,6 +37,7 @@ set(EXTRA_LIBS
 )
 
 #Build Vision test
-add_executable(testVision ${SOURCES_FILES_CPP})
-target_link_libraries(testVision ${EXTRA_LIBS})
+add_executable(soccer ${SOURCES_FILES_CPP})
+target_link_libraries(soccer ${EXTRA_LIBS})
+
 

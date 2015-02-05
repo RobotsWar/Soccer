@@ -8,8 +8,8 @@ set(SOURCES_FILES_CPP
 
 #Use OpenCV and v4l2
 set(EXTRA_LIBS
-    ${OpenCV_LIBS}
-    v4l2
+  ${OpenCV_LIBS}
+  v4l2
 )
 
 #Build Vision test

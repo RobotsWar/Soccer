@@ -1,3 +1,6 @@
+# Hidden files
+.*
+
 # Compiled Object files
 *.slo
 *.lo
@@ -30,8 +33,12 @@
 # CMAKE
 **/build/
 
-#VIM
+# VIM
 *.swp
 
-#Emacs
+# Emacs
 *~
+\#*#
+
+# Editors...
+*.autosave

@@ -1,4 +1,7 @@
-#include "params.hpp"
+#include "Utils/params.hpp"
+
+#include <iostream>
+#include <fstream>
 
 void defaultParams(params & p)
 {
@@ -77,4 +80,25 @@ bool readParams(params & p, const std::string & str)
 
    defaultParams(p);
    return false;
+}
+
+void loadParams(params & p, const std::string & file)
+{
+   std::ifstream in(file.c_str());
+   if (! in.is_open())
+      defaultParams(p);
+   else
+   {
+      std::string s;
+      std::getline(in, s);
+      readParams(p, s);
+   }
+   in.close();
+}
+
+void saveParams(params & p, const std::string & file)
+{
+   std::ofstream out(file.c_str());
+   if (out.is_open())
+      out << to_string(p);
 }
