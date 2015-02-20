@@ -25,6 +25,7 @@ int main()
 
         // Do something clever here !
         // clever();
+        img.writePPM("out.ppm");
 
         // Sending angles to the hardware server
         for (unsigned int k=0; k<4; k++) {

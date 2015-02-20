@@ -18,6 +18,7 @@ HardwareImage HardwareImage::decode(std::string str)
     img.height |= (str[k++]&0xff)<<8;
     img.height |= (str[k++]&0xff)<<0;
 
+    printf("Size: %d\n", str.size()-k);
     for (; k<str.size(); k++) {
         img.data += str[k];
     }
@@ -42,4 +43,32 @@ std::string HardwareImage::encode()
     buffer += data;
 
     return buffer;
+}
+
+int HardwareImage::getR(int x, int y)
+{
+    return data[(height-x-1)*128*3+3*y+0];
+}
+
+int HardwareImage::getG(int x, int y)
+{
+    return data[(height-x-1)*128*3+3*y+1];
+}
+
+int HardwareImage::getB(int x, int y)
+{
+    return data[(height-x-1)*128*3+3*y+2];
+}
+        
+void HardwareImage::writePPM(std::string filename)
+{
+    FILE* f = fopen(filename.c_str(),"w");
+    fprintf(f,"P3\n%d %d\n255\n", width, height);
+    for (unsigned int x=0; x<width; x++) {
+        for (unsigned int y=0; y<height; y++) {
+            fprintf(f,"%hhu %hhu %hhu ", getR(x,y), getG(x,y), getB(x,y));
+        }
+        fprintf(f, "\n");
+    }
+    fclose(f);
 }
