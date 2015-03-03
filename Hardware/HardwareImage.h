@@ -9,6 +9,7 @@ class HardwareImage
         int getR(int x, int y);
         int getG(int x, int y);
         int getB(int x, int y);
+        void setColor(int x, int y, int col);
         void writePPM(std::string filename);
 
         std::string data;

@@ -15,7 +15,6 @@ void HardwareClient::imageProcess()
         int size = zmq_msg_recv(&message, imagesClient, 0);
         std::string data = std::string((char*)zmq_msg_data(&message), size);
         image = HardwareImage::decode(data);
-        printf("Image: %d x %d\n", image.width, image.height);
     }
 }
 
