@@ -6,6 +6,7 @@ class HardwareImage
         static HardwareImage decode(std::string str);
         std::string encode();
 
+        int getV(int index);
         int getR(int x, int y);
         int getG(int x, int y);
         int getB(int x, int y);
