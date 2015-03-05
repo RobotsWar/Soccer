@@ -4,7 +4,7 @@ project(Soccer)
 set (HARDWARE "${CMAKE_CURRENT_SOURCE_DIR}/../Hardware"
     CACHE "Hardware directory" STRING)
 
-set (CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wno-reorder -pedantic -U__STRICT_ANSI__")
+set (CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wno-reorder -pedantic")
 
 include_directories(${HARDWARE})
 

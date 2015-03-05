@@ -46,8 +46,8 @@ std::string HardwareImage::encode()
 
 int HardwareImage::getV(int index)
 {
-    if (index < data.length) {
-        return data[index];
+    if (index < data.length()) {
+        return data[index]&0xff;
     } else {
         return 0;
     }
@@ -55,17 +55,17 @@ int HardwareImage::getV(int index)
 
 int HardwareImage::getR(int x, int y)
 {
-    return getV((width-y-1)*128*3+3*x+0]&0xff);
+    return getV((width-y-1)*128*3+3*x+0);
 }
 
 int HardwareImage::getG(int x, int y)
 {
-    return getV((width-y-1)*128*3+3*x+1]&0xff);
+    return getV((width-y-1)*128*3+3*x+1);
 }
 
 int HardwareImage::getB(int x, int y)
 {
-    return getV((width-y-1)*128*3+3*x+2]&0xff);
+    return getV((width-y-1)*128*3+3*x+2);
 }
         
 void HardwareImage::writePPM(std::string filename)
@@ -83,7 +83,7 @@ void HardwareImage::writePPM(std::string filename)
 
 void HardwareImage::setColor(int x, int y, int col)
 {
-    if (((height-y-1)*128*3+3*x+2) < data.length) {
+    if (((height-y-1)*128*3+3*x+2) < data.length()) {
         data[(height-y-1)*128*3+3*x+0] = (col>>16)&0xff;
         data[(height-y-1)*128*3+3*x+1] = (col>>8)&0xff;
         data[(height-y-1)*128*3+3*x+2] = (col>>0)&0xff;
