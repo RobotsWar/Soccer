@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include "locomotion.h"
 #include <rhosh/terminal.h>
-#include <rhosh/std.h>
 
 using namespace std;
     
@@ -13,7 +12,7 @@ HardwareClient client;
 
 int main()
 {
-    terminal_std_init();
+    terminal_init();
     float dx=0, dy=0, turn=0;
     float sdx=0, sdy=0, sturn=0;
     float t = 0;
@@ -73,7 +72,7 @@ int main()
         sturn = sturn*0.8+turn*0.2;
         locomotion_set_dx(sdx);
         locomotion_set_dy(sdy);
-        locomotion_set_turn(sturn+eturn);
+        locomotion_set_turn(sturn);
 
         // Sending angles to the hardware server
         for (unsigned int k=0; k<4; k++) {
